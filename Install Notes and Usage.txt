@@ -1,0 +1,21 @@
+Install NI-VISA from here:
+https://www.ni.com/en-no/support/downloads/drivers/download.ni-visa.html#442805
+
+HMP4040 need drivers. Install it from the Driver folder.
+
+conda activate PSU_REMOTE
+
+-------------------------------------------------------------------------------------
+Setup influxdb in config\influxdb.json
+"database 1" is for test setup 1
+"database 2" is for test setup 2
+
+configure channel to monitor in hmp4040.json.
+
+Example of usage:
+python hmp4040_remote.py -s 2 -m
+python hmp4040_remote.py -c 2 -v 10 -i 3.4 -o
+
+python ki2450_remote.py -v 10 -i 3.4 -o
+
+For VI_scan and IV_scan, need to change settings in the files.

@@ -1,0 +1,94 @@
+; Windows USB CDC ACM Setup File
+; Copyright (c) 2000 Microsoft Corporation
+; Copyright (C) 2014 ROHDE & SCHWARZ GmbH & Co. KG
+
+[Version]
+Signature="$Windows NT$"
+Class=Ports
+ClassGuid={4D36E978-E325-11CE-BFC1-08002BE10318}
+Provider=%MFGNAME% 
+CatalogFile=%MFGFILENAME%.cat
+DriverVer=04/11/2014,1.5.0
+
+[Manufacturer]
+%MFGNAME%=DeviceList,NT,NTamd64
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+;------------------------------------------------------------------------------
+;  Windows 2000/XP/Vista-32bit Sections
+;------------------------------------------------------------------------------
+
+[DriverInstall.NT]
+Include=mdmcpq.inf
+CopyFiles=FakeModemCopyFileSection
+AddReg=DriverInstall.NT.AddReg
+
+[DriverInstall.NT.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,%DRIVERFILENAME%.sys
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
+
+[DriverInstall.NT.Services]
+AddService=usbser, 0x00000002, DriverServiceInst
+
+[DriverServiceInst]
+DisplayName=%SERVICE%
+ServiceType = 1
+StartType = 3
+ErrorControl = 1
+ServiceBinary= %12%\%DRIVERFILENAME%.sys
+LoadOrderGroup = Base
+
+;------------------------------------------------------------------------------
+;  Vendor and Product ID Definitions
+;------------------------------------------------------------------------------
+[SourceDisksFiles]
+
+[SourceDisksNames]
+1=%DriversDisk%,,,
+
+[DeviceList.NT]
+%DESCRIPTION_HMC8012%=DriverInstall,USB\VID_0AAD&PID_00FF
+%DESCRIPTION_HMC8041%=DriverInstall,USB\VID_0AAD&PID_0100
+%DESCRIPTION_HMC8043%=DriverInstall,USB\VID_0AAD&PID_0101
+%DESCRIPTION_HO732%=DriverInstall,USB\VID_0AAD&PID_0117
+%DESCRIPTION_HMO1000%=DriverInstall,USB\VID_0AAD&PID_0118
+%DESCRIPTION_HMC8042%=DriverInstall,USB\VID_0AAD&PID_0133
+%DESCRIPTION_HMC8015%=DriverInstall,USB\VID_0AAD&PID_0134
+%DESCRIPTION_HMC%=DriverInstall,USB\VID_0AAD&PID_0135
+%DESCRIPTION_GENERIC%=DriverInstall,USB\VID_0AAD&PID_013C
+%DESCRIPTION_HMO%=DriverInstall,USB\VID_0AAD&PID_013D
+
+[DeviceList.NTamd64]
+%DESCRIPTION_HMC8012%=DriverInstall,USB\VID_0AAD&PID_00FF
+%DESCRIPTION_HMC8041%=DriverInstall,USB\VID_0AAD&PID_0100
+%DESCRIPTION_HMC8043%=DriverInstall,USB\VID_0AAD&PID_0101
+%DESCRIPTION_HO732%=DriverInstall,USB\VID_0AAD&PID_0117
+%DESCRIPTION_HMO1000%=DriverInstall,USB\VID_0AAD&PID_0118
+%DESCRIPTION_HMC8042%=DriverInstall,USB\VID_0AAD&PID_0133
+%DESCRIPTION_HMC8015%=DriverInstall,USB\VID_0AAD&PID_0134
+%DESCRIPTION_HMC%=DriverInstall,USB\VID_0AAD&PID_0135
+%DESCRIPTION_GENERIC%=DriverInstall,USB\VID_0AAD&PID_013C
+%DESCRIPTION_HMO%=DriverInstall,USB\VID_0AAD&PID_013D
+
+;------------------------------------------------------------------------------
+;  String Definitions
+;------------------------------------------------------------------------------
+[Strings]
+MFGFILENAME = "rscdc"
+DRIVERFILENAME = "usbser"
+MFGNAME = "ROHDE & SCHWARZ GmbH & Co. KG"
+DESCRIPTION_GENERIC = "ROHDE & SCHWARZ Device"
+DESCRIPTION_HMC = "HMC Series"
+DESCRIPTION_HMC8012 = "HMC 8012"
+DESCRIPTION_HMC8015 = "HMC 8015"
+DESCRIPTION_HMC8041 = "HMC 8041"
+DESCRIPTION_HMC8042 = "HMC 8042"
+DESCRIPTION_HMC8043 = "HMC 8043"
+DESCRIPTION_HO732 = "HO 732"
+DESCRIPTION_HMO = "HMO Series"
+DESCRIPTION_HMO1000 = "HMO 1002 Series"
+SERVICE = "Virtual Com Port"
+DriversDisk = "ROHDE & SCHWARZ Drivers Disk" 
