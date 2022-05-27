@@ -3,6 +3,8 @@ https://www.ni.com/en-no/support/downloads/drivers/download.ni-visa.html#442805
 
 HMP4040 need drivers. Install it from the Driver folder.
 
+Install conda and create environment from environment.yml.
+Use "conda env create -f environment.yml"
 conda activate PSU_REMOTE
 
 -------------------------------------------------------------------------------------

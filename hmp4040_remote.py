@@ -206,8 +206,8 @@ def main(argv):
                                 
                             # influx.writeInflux(source[0:3] + "_current_" + str(i + 1), datum_current)
                             # influx.writeInflux(source[0:3] + "_voltage_" + str(i + 1), datum_voltage)
-                            influx.writeInflux("Module_current_" + str(i + 1), datum_current)
-                            influx.writeInflux("Module_voltage_" + str(i + 1), datum_voltage)
+                            influx.writeInflux("Module_current_" + str(i + 1), datum_current, i + 1)
+                            influx.writeInflux("Module_voltage_" + str(i + 1), datum_voltage, i + 1)
                             
                 time.sleep(0.33)
                 

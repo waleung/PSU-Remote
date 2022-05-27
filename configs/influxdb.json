@@ -1,7 +1,8 @@
 {
 	"username": "",
 	"password": "",
-	"database": "qaqc_db_2",
+	"database": "qaqc_db",
+	"database_2": "qaqc_db_2",
 	"host": "127.0.0.1",
 	"port": "8086",
 	"organization": "",

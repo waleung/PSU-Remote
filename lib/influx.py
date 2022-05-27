@@ -33,9 +33,13 @@ class Influx():
         
         self.write_api = self.client.write_api(write_options=ASYNCHRONOUS)
         
-    def writeInflux(self, source, datum):
+    def writeInflux(self, source, datum, setup = 1):
         dataPoint = influxdb_client.Point(self.influx_details['measurement']).tag("location", self.influx_details['location']).field(source, datum[0]).time(int(datum[1]*1000), write_precision=WritePrecision.MS)
-        write_results = self.write_api.write(bucket=f"{self.influx_details['database']}", record=dataPoint)
+        
+        if setup == 1:
+            write_results = self.write_api.write(bucket=f"{self.influx_details['database']}", record=dataPoint)
+        if setup == 2:
+            write_results = self.write_api.write(bucket=f"{self.influx_details['database_2']}", record=dataPoint)
         try:
             write_results.get()
         except:

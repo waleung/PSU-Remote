@@ -2,10 +2,10 @@
 	"resource_name": "ASRL6::INSTR",
 	
 	"setup_1": {
-		"channel": -1
+		"channel": 1
 	},
 	
 	"setup_2": {
-		"channel": 4
+		"channel": 2
 	}
 }
