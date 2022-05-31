@@ -35,6 +35,12 @@ if __name__ == "__main__":
             sys.exit(1)
             
     if LOCAL:
+        current_directory = os.getcwd()
+        final_directory = os.path.join(current_directory, r'data')
+        
+        if not os.path.exists(final_directory):
+            os.makedirs(final_directory)
+            
         date = datetime.datetime.now().strftime("%c")
         datename = date.replace(":", "_")
         data_file = open("data/IV_Scan" + str(datename) + "_" + str(TEMPERATURE) + ".csv", mode = "w", newline = "")
