@@ -10,17 +10,17 @@ from lib.influx import Influx
 
 """---------------------------------------------------------------------------------------------------------------------------------"""
 CHANNEL = 4
-VOLTAGE_LIMIT = 1.7
-CURRENT_START = 2.5
+VOLTAGE_LIMIT = 2
+CURRENT_START = 3.75
 CURRENT_END = 0.1
 CURRENT_STEPS = 0.1
 TIME_IN_STEPS = 1
 TIME_BETWEEN_STEPS = 1
 MODE = 1 # Regular ramping: (0) / Switch on and off: (1)
-INFLUX = 1 # Enable (1) or disable (0) upload to influxdb
+INFLUX = 0 # Enable (1) or disable (0) upload to influxdb
 LOCAL = 1 # Enable (1) or disable (0) saving data locally
 RESOURCE_NAME = 'ASRL6::INSTR' # VISA resource name. Can be found using pyvisa.ResourceManager
-MODULE_NUMBER = "20UPI7000004"
+MODULE_NUMBER = "RD53AE1003"
 TEMPERATURE = "20C"
 """---------------------------------------------------------------------------------------------------------------------------------"""
 
@@ -44,6 +44,12 @@ if __name__ == "__main__":
             sys.exit(1)
             
     if LOCAL:
+        current_directory = os.getcwd()
+        final_directory = os.path.join(current_directory, r'data')
+        
+        if not os.path.exists(final_directory):
+            os.makedirs(final_directory)
+    
         date = datetime.datetime.now().strftime("%c")
         datename = date.replace(":", "_")
         data_file = open("data/VI_Scan_" + str(datename) + "_" + str(TEMPERATURE) + ".csv", mode = "w", newline = "")
