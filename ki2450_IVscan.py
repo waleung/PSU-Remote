@@ -21,6 +21,7 @@ LOCAL = 0 # Enable (1) or disable (0) saving data locally
 RESOURCE_NAME = 'USB0::0x05E6::0x2450::04424778::INSTR' # VISA resource name. Can be found using pyvisa.ResourceManager
 CHIP_ID = "123ABC"
 TEMPERATURE = "-10000C"
+TEST_SETUP = 1 #Can be 1 or 2
 """---------------------------------------------------------------------------------------------------------------------------------"""
 
 if __name__ == "__main__":
@@ -79,8 +80,8 @@ if __name__ == "__main__":
             ki2450.setVoltage(0); print("Setting voltage to: 0.0V")
         
         if INFLUX:
-            influx.writeInflux("Sensor_current", datum_current)
-            influx.writeInflux("Sensor_voltage", datum_voltage)
+            influx.writeInflux("Sensor_current", datum_current, TEST_SETUP)
+            influx.writeInflux("Sensor_voltage", datum_voltage, TEST_SETUP)
             
         if LOCAL:
             data_file_writer.writerow([voltage, current])

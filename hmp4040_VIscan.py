@@ -9,7 +9,7 @@ from lib.hmp4040 import HMP4040
 from lib.influx import Influx
 
 """---------------------------------------------------------------------------------------------------------------------------------"""
-CHANNEL = 4
+CHANNEL = 1
 VOLTAGE_LIMIT = 2
 CURRENT_START = 3.75
 CURRENT_END = 0.1
@@ -22,6 +22,7 @@ LOCAL = 1 # Enable (1) or disable (0) saving data locally
 RESOURCE_NAME = 'ASRL6::INSTR' # VISA resource name. Can be found using pyvisa.ResourceManager
 MODULE_NUMBER = "RD53AE1003"
 TEMPERATURE = "20C"
+TEST_SETUP = 1 #Can be 1 or 2
 """---------------------------------------------------------------------------------------------------------------------------------"""
 
 """Global Variables"""
@@ -90,8 +91,8 @@ if __name__ == "__main__":
             hmp4040.setChannel(False); print("Deactivating channel: " + str(CHANNEL))
         
         if INFLUX:
-            influx.writeInflux("Sensor_current", datum_current)
-            influx.writeInflux("Sensor_voltage", datum_voltage)
+            influx.writeInflux("Module_current_" + str(TEST_SETUP), datum_current, TEST_SETUP)
+            influx.writeInflux("Module_voltage_" + str(TEST_SETUP), datum_voltage, TEST_SETUP)
             
         if LOCAL:
             data_file_writer.writerow([current, voltage])
