@@ -47,7 +47,7 @@ def limit(value, output):
     if (value > 2.0) and (output == 'voltage'):
         print("\33[30;103m" + "Warning: Voltage limit must be set to 2.0V or under" + "\33[0m")
         return False
-    elif (value > 4.0) and (output == 'current'):
+    elif (value > 4.5) and (output == 'current'):
         print("\33[30;103m" + "Current limit must be set to 4.0A or under" + "\33[0m")
         return False
     else:
