@@ -46,3 +46,9 @@ MODULE_NUMBER = "RD53AE1003"
 TEMPERATURE = "20C"
 """---------------------------------------------------------------------------------------------------------------------------------"""
 ````
+
+### Windows Named Pipe
+While logging to influx db, one can use Windows Named Pipe to communicate with the PSU. The pipe are named "hmp4040" <br>
+
+Example: <br>
+Sending a tuple: ````(true, 2)```` to "hmp4040" will turn off the output to channel 2. 
