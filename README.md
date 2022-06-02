@@ -1,6 +1,8 @@
 # PSU-Remote
 
 ## Installation
+Git clone this repository.
+
 Install NI-VISA from here: <br>
 https://www.ni.com/en-no/support/downloads/drivers/download.ni-visa.html#442805 <br>
 
