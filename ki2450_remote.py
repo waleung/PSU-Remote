@@ -8,6 +8,7 @@ import os
 import json
 import os.path
 import numpy
+import threading
 from lib.ki2450 import KI2450
 from lib.influx import Influx
 
@@ -38,17 +39,19 @@ def tcpConnection(queue):
                 break
     #listener.close()
 
-def doInterlock(psu, channel):
+def doInterlock(psu, steps, sleepTime):
     print("\33[30;101m" + "Interlock has been activated" + "\33[0m")
-    print("\33[30;101m" + "Setting Output to Channel " + str(channel) + " off" + "\33[0m")
-    psu.selectChannel(channel)
-    psu.setChannel(False)
+    print("\33[30;101m" + "Ramping down output" + "\33[0m")
     
-def rampDown(psu, steps):
+    hv_thread = threading.Thread(target = rampDown, args=(psu, steps, sleepTime))
+    hv_thread.setDaemon(True)
+    hv_thread.start()
+    
+def rampDown(psu, steps, sleepTime):
     voltage = int(psu.displayVoltage())
     for i in numpy.arange(0, voltage, steps)[::-1]:
         psu.setVoltage(i); print("Setting voltage to: " + str(i) + "V")
-        time.sleep(1)
+        time.sleep(sleepTime)
     psu.setOutput(False); print("Setting Output off")
 
 # def limit(value, output):
@@ -60,6 +63,10 @@ def rampDown(psu, steps):
         # return False
     # else:
         # return True
+        
+def setCompliance(psu, compliance):
+    psu.setCurrentCompliance(compliance) ; print("Setting compliance to: " + str(compliance) + "A")
+    
 
 def usage():
     print('\nUsage: <hmp4040_remote.py> -c channel | -s/i/v/a/o argument | -m/d | -h help')
@@ -174,33 +181,24 @@ def main(argv):
         influx = Influx()
         influx.connectInflux()
         
-        #queue = multiprocessing.Queue()
-        #signalProcess = multiprocessing.Process(target = tcpConnection, args = (queue,))
-        #signalProcess.daemon = True
+        queue = multiprocessing.Queue()
+        signalProcess = multiprocessing.Process(target = tcpConnection, args = (queue,))
+        signalProcess.daemon = True
         
-        #signalProcess.start()
+        signalProcess.start()
         
         #list_setups = [jsonConfigs.get("setup_1"), jsonConfigs.get("setup_2")]
         
         if influx.checkConnection():
             while True:
-                
-                
-                # for i in range(0, len(list_setups)):
-                
-                    #"""Check for interlock signal"""
-                    # if not queue.empty():
-                        # msg = queue.get_nowait()
-                        # interlock_state = msg[0]
-                        # if interlock_state:
-                            # doInterlock(hmp4040, msg[1])
-                            
-                    #"""Upload vdd and vda data to influx"""
-                #setup = list_setups[i]
-                #for source in setup:
-                #channel = setup.get(source)
-                #if channel != -1:
-                #hmp4040.selectChannel(channel)
+                """Check for interlock signal"""
+                if not queue.empty():
+                    msg = queue.get_nowait()
+
+                    if msg[0] == 19:
+                        setCompliance(ki2450, msg[1])
+                    if msg[0] == 20:
+                        doInterlock(ki2450, msg[1], msg[2])
                 
                 current = float(ki2450.measureCurrent())
                 time_curr_now = time.time()

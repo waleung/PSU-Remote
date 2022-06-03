@@ -40,15 +40,15 @@ def tcpConnection(queue):
 def doInterlock(psu, channel):
     print("\33[30;101m" + "Interlock has been activated" + "\33[0m")
     print("\33[30;101m" + "Setting Output to Channel " + str(channel) + " off" + "\33[0m")
-    psu.selectChannel(channel)
-    psu.setChannel(False)
+    #psu.selectChannel(channel)
+    psu.setOutput(False)
 
 def limit(value, output):
     if (value > 2.0) and (output == 'voltage'):
         print("\33[30;103m" + "Warning: Voltage limit must be set to 2.0V or under" + "\33[0m")
         return False
-    elif (value > 4.5) and (output == 'current'):
-        print("\33[30;103m" + "Current limit must be set to 4.0A or under" + "\33[0m")
+    elif (value > 5) and (output == 'current'):
+        print("\33[30;103m" + "Current limit must be set to 5.0A or under" + "\33[0m")
         return False
     else:
         return True
